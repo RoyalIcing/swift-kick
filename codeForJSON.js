@@ -80,7 +80,8 @@ const toJSONForCase = R.converge((name, associatedNames, assigns) => R.flatten([
     ),
     R.pipe(
         R.prop('associated'),
-        R.map(assignForAssociated)
+        R.map(assignForAssociated),
+        R.prepend(`"type": Kind.${name}.toJSON()`)
     )
 ])
 
