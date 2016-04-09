@@ -4,13 +4,11 @@ const indentLines = require('./indentLines')
 
 const tapLog = (id) => R.tap(input => console.log(id, input))
 
-const decodeMethodForType = (type) => (
-    type === 'NSUUID' ? (
-        'decodeUUID'
-    ) : (
-        'decode'
-    )
-)
+const decodeMethodForType = R.cond([
+    [R.equals('NSUUID'), R.always('decodeUUID')],
+    [R.test(/\?$/), R.always('decodeOptional')],
+    [R.T, R.always('decode')]
+])
 
 const decodeForAssociated = (associated) => (
     `${
