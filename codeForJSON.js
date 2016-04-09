@@ -5,19 +5,19 @@ const indentLines = require('./indentLines')
 const tapLog = (id) => R.tap(input => console.log(id, input))
 
 const decodeMethodForType = R.cond([
-	[R.equals('NSUUID'), R.always('decodeUUID')],
-	[R.test(/\?$/), R.always('decodeOptional')],
-	[R.T, R.always('decode')]
+	[R.equals('NSUUID'), R.always(name => `decodeUUID("${name}")`)],
+	[R.equals('NSData'), R.always(name => `decodeData("${name}")`)],
+	[R.equals('NSURL'), R.always(name => `decodeURL("${name}")`)],
+	[R.test(/\?$/), R.always(name => `decodeOptional("${name}")`)],
+	[R.T, R.always(name => `decode("${name}")`)]
 ])
 
 const decodeForAssociated = (associated) => (
 	`${
 		associated.name
 	}: source.${
-		decodeMethodForType(associated.type)
-	}("${
-		associated.name
-	}")`
+		decodeMethodForType(associated.type)(associated.name)
+	}`
 )
 
 const commaLine = (line) => `${line},`
