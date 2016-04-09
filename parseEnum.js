@@ -8,7 +8,11 @@ const parseName = R.pipe(
 )
 
 const parseAssociated = R.pipe(
+    R.defaultTo(''),
+    R.replace(/^\s*\(/, ''),
+    R.replace(/\)?\s*$/, ''),
     R.split(/,\s?/),
+    R.reject(R.isEmpty),
     R.map(R.pipe(
         R.match(/([^:\s]+)[:\s]+(.+)/),
         R.tail,
@@ -17,9 +21,11 @@ const parseAssociated = R.pipe(
 )
     
 const parseCases = R.pipe(
-    R.match(/\s?case[\s\S]+?\)/gm),
+    R.split(/\scase/),
+    R.tail(), // Remove initial `enum ... {`
     R.map(R.pipe(
-        R.match(/case (.+?)\(([\s\S]+)\)/),
+        R.trim(),
+        R.match(/([^(]+)(\([\s\S]+\))?/),
         R.tail,
         R.over(R.lensIndex(1), parseAssociated),
         R.zipObj(['name', 'associated'])

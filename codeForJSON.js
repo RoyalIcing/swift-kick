@@ -32,17 +32,26 @@ const commaLines = R.converge(
         R.last
     ])
 
-const initForCase = R.converge((name, decodes) => R.flatten([
-    `case .${name}:`,
+const initForCase = R.converge((name, hasAssociated, decodes) => R.flatten([
+    `case .${name}:`
+].concat(hasAssociated ? [
     `\tself = try .${name}(`,
     indentLines(indentLines(commaLines(decodes))),
     `\t)`
-]), [
+] : [
+    `\tself = .${name}`
+])
+    
+), [
     R.prop('name'),
     R.pipe(
         R.prop('associated'),
+        R.complement(R.isEmpty)
+    ),
+    R.pipe(
+        R.prop('associated'),
         R.map(decodeForAssociated)
-    )
+    ),
 ])
 
 const initMethodForCases = R.pipe(
@@ -68,9 +77,17 @@ const assignForAssociated = (associated) => (
 )
 
 const toJSONForCase = R.converge((name, associatedNames, assigns) => R.flatten([
-    `case let .${name}(${ associatedNames.join(', ') }):`,
+    !!associatedNames ? (
+        `case let .${name}(${ associatedNames.join(', ') }):`
+    ) : (
+        `case let .${name}:`
+    ),
     `\treturn .ObjectValue([`,
-    indentLines(indentLines(commaLines(assigns))),
+    indentLines(indentLines(commaLines(
+        [
+            `"type": Kind.${name}.toJSON()`
+        ].concat(assigns)
+    ))),
     `\t])`
 ]), [
     R.prop('name'),
@@ -79,9 +96,8 @@ const toJSONForCase = R.converge((name, associatedNames, assigns) => R.flatten([
         R.pluck('name')
     ),
     R.pipe(
-        R.prop('associated'),
-        R.map(assignForAssociated),
-        R.prepend(`"type": Kind.${name}.toJSON()`)
+        R.propOr([], 'associated'),
+        R.map(assignForAssociated)
     )
 ])
 
