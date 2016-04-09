@@ -30,9 +30,9 @@ const commaLines = R.converge(
 		R.last
 	])
 
-const initForCase = R.converge((name, hasAssociated, decodes) => R.flatten([
+const initForCase = R.converge((name, decodes) => R.flatten([
 	`case .${name}:`
-].concat(hasAssociated ? [
+].concat(!R.isEmpty(decodes) ? [
 	`\tself = try .${name}(`,
 	indentLines(indentLines(commaLines(decodes))),
 	`\t)`
@@ -42,10 +42,6 @@ const initForCase = R.converge((name, hasAssociated, decodes) => R.flatten([
 	
 ), [
 	R.prop('name'),
-	R.pipe(
-		R.prop('associated'),
-		R.complement(R.isEmpty)
-	),
 	R.pipe(
 		R.prop('associated'),
 		R.map(decodeForAssociated)
