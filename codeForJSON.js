@@ -75,10 +75,10 @@ const assignForAssociated = (associated) => (
 )
 
 const toJSONForCase = R.converge((name, associatedNames, assigns) => R.flatten([
-	!!associatedNames ? (
+	!R.isEmpty(associatedNames) ? (
 		`case let .${name}(${ associatedNames.join(', ') }):`
 	) : (
-		`case let .${name}:`
+		`case .${name}:`
 	),
 	`\treturn .ObjectValue([`,
 	indentLines(indentLines(commaLines(
