@@ -12,13 +12,17 @@ const decodeMethodForType = R.cond([
 	[R.T, R.always(name => `decode("${name}")`)]
 ])
 
-const decodeForAssociated = (associated) => (
+const decodeForAssociated = R.curry((caseName, associated) => (
 	`${
-		associated.name
-	}: source.${
-		decodeMethodForType(associated.type)(associated.name)
+		R.ifElse(
+			R.isNil,
+			R.always(''),
+			(t) => `${t}:`
+		)(associated.name)
+	} source.${
+		decodeMethodForType(associated.type)(R.defaultTo(caseName, associated.name))
 	}`
-)
+))
 
 const commaLine = (line) => `${line},`
 const commaLines = R.converge(
@@ -42,10 +46,13 @@ const initForCase = R.converge((name, decodes) => R.flatten([
 	
 ), [
 	R.prop('name'),
-	R.pipe(
+	R.converge((associated, caseName) => R.map(
+		decodeForAssociated(caseName),
+		associated
+	), [
 		R.prop('associated'),
-		R.map(decodeForAssociated)
-	),
+		R.prop('name')	
+	])
 ])
 
 const initMethodForCases = R.pipe(
@@ -66,13 +73,15 @@ const initMethodForCases = R.pipe(
 )
 
 
-const assignForAssociated = (associated) => (
-	`"${ associated.name }": ${ associated.name }.toJSON()`
+const assignForAssociatedName = (name) => (
+	`"${ name }": ${ name }.toJSON()`
 )
 
-const toJSONForCase = R.converge((name, associatedNames, assigns) => R.flatten([
+const toJSONForCase = R.converge((name, associatedNames) => R.flatten([
 	!R.isEmpty(associatedNames) ? (
-		`case let .${name}(${ associatedNames.join(', ') }):`
+		`case let .${name}(${
+			R.join(', ', associatedNames)
+		}):`
 	) : (
 		`case .${name}:`
 	),
@@ -80,19 +89,21 @@ const toJSONForCase = R.converge((name, associatedNames, assigns) => R.flatten([
 	indentLines(indentLines(commaLines(
 		[
 			`"type": Kind.${name}.toJSON()`
-		].concat(assigns)
+		].concat(R.map(assignForAssociatedName, associatedNames))
 	))),
 	`\t])`
 ]), [
 	R.prop('name'),
-	R.pipe(
-		R.prop('associated'),
+	R.converge(R.pipe(
+		R.map,
 		R.pluck('name')
-	),
-	R.pipe(
-		R.propOr([], 'associated'),
-		R.map(assignForAssociated)
-	)
+	), [
+		R.pipe(
+			R.pick(['name']),
+			R.mergeWith(R.defaultTo) // Merge overriding explicit undefined
+		),
+		R.propOr([], 'associated')
+	])
 ])
 
 const toJSONMethodForCases = R.pipe(

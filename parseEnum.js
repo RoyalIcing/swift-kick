@@ -14,13 +14,19 @@ const parseAssociated = R.pipe(
 	R.split(/,\s?/),
 	R.reject(R.isEmpty),
 	R.map(R.pipe(
-		R.match(/([^:\s]+)[:\s]+(.+)/),
-		R.tail,
+		R.split(':'),
+		R.map(R.trim),
+		R.when(
+			R.propEq('length', 1),
+			R.prepend(undefined)
+		),
 		R.zipObj(['name', 'type'])
 	))
 )
 	
 const parseCases = R.pipe(
+	R.split('}'),
+	R.head(),
 	R.split(/\scase/),
 	R.tail(), // Remove initial `enum ... {`
 	R.map(R.pipe(
