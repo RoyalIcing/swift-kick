@@ -3,7 +3,7 @@ const R = require('ramda')
 const tapLog = (id) => R.tap(input => console.log(id, input))
 
 const parseName = R.pipe(
-	R.match(/\s?public enum ([^\s:]+).+{/),
+	R.match(/\s?[\w]*\s?enum ([^\s:]+).+{/),
 	R.prop(1)
 )
 
