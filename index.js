@@ -18,14 +18,14 @@ const pipeStdin = (...funcs) => {
 }
 
 switch (task) {
-case 'parse-enum':
+case 'enum:parse':
 	stdio.read((code) => {
 		console.log(
 			JSON.stringify(parseEnum(code), null, 2)
 		)
 	})
 	break
-case 'enum-json':
+case 'enum:json':
 	stdio.read((code) => {
 		const enumTree = parseEnum(code) 
 		console.log(
@@ -37,13 +37,14 @@ case 'enum-json':
 		)
 	})
 	break
-case 'enum:==':
+case 'enum:eq':
 	stdio.read((code) => {
 		const enumTree = parseEnum(code) 
 		console.log(
 			R.join('\n', equatesFuncForEnum(enumTree))
 		)
 	})
+	break
 default:
 	console.error(`unknown task ${task}`)
 }
