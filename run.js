@@ -1,10 +1,10 @@
 const R = require('ramda')
 const stdio = require('stdio')
 
-const parseEnum = require('./parseEnum')
-const codeForKind = require('./code-generation/kind')
-const codeForJSON = require('./code-generation/json')
-const { equatesFuncForEnum } = require('./code-generation/equatable')
+const parseEnum = require('./src/parseEnum')
+const codeForKind = require('./src/code-generation/kind')
+const codeForJSON = require('./src/code-generation/json')
+const { equatesFuncForEnum } = require('./src/code-generation/equatable')
 
 const task = R.prop(2, process.argv)
 const args = R.drop(3, process.argv)

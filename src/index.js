@@ -13,6 +13,6 @@ export class Enum {
 	}
 }
 
-const SwiftKick = {
+export default {
 	Enum
 }
