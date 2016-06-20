@@ -1,6 +1,6 @@
 const R = require('ramda')
 
-const indentLines = require('./indentLines')
+const indentLines = require('./utils/indentLines')
 
 
 const kindEnumForCases = R.pipe(

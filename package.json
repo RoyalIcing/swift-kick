@@ -4,12 +4,15 @@
   "description": "Tool to ease Swift development",
   "main": "index.js",
   "scripts": {
-	"test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Patrick Smith",
   "license": "ISC",
   "dependencies": {
-	"ramda": "^0.20.1",
-	"stdio": "^0.2.7"
+    "ramda": "^0.20.1",
+    "stdio": "^0.2.7"
+  },
+  "devDependencies": {
+    "rollup-plugin-babel": "^2.4.0"
   }
 }

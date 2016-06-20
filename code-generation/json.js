@@ -1,6 +1,8 @@
 const R = require('ramda')
 
-const indentLines = require('./indentLines')
+const associatedNamesForCase = require('./utils/associatedNamesForCase')
+const indentLines = require('./utils/indentLines')
+const commaLines = require('./utils/commaLines')
 
 const tapLog = (id) => R.tap(input => console.log(id, input))
 
@@ -23,16 +25,6 @@ const decodeForAssociated = R.curry((caseName, associated) => (
 		decodeMethodForType(associated.type)(R.defaultTo(caseName, associated.name))
 	}`
 ))
-
-const commaLine = (line) => `${line},`
-const commaLines = R.converge(
-	R.concat, [
-		R.pipe(
-			R.init,
-			R.map(commaLine)
-		),
-		R.last
-	])
 
 const initForCase = R.converge((name, decodes) => R.flatten([
 	`case .${name}:`
@@ -94,16 +86,7 @@ const toJSONForCase = R.converge((name, associatedNames) => R.flatten([
 	`\t])`
 ]), [
 	R.prop('name'),
-	R.converge(R.pipe(
-		R.map,
-		R.pluck('name')
-	), [
-		R.pipe(
-			R.pick(['name']),
-			R.mergeWith(R.defaultTo) // Merge overriding explicit undefined
-		),
-		R.propOr([], 'associated')
-	])
+	associatedNamesForCase
 ])
 
 const toJSONMethodForCases = R.pipe(
