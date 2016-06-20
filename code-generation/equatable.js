@@ -24,9 +24,11 @@ const equatesForCase = R.converge((name, associatedNames) => (
 
 const equatesFuncForEnum = R.converge(
 	(enumName, innerLines) => R.flatten([
-		`public func == (lhs: ${enumName}, rhs: ${enumName}) {`,
+		`public func == (lhs: ${enumName}, rhs: ${enumName}) -> Bool {`,
 		'\tswitch (lhs, rhs) {',
 		indentLines(innerLines),
+		'default:',
+		'\treturn false',
 		'\t}',
 		'}'
 	]), [
