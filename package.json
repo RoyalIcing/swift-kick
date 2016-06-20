@@ -1,10 +1,19 @@
 {
   "name": "swift-kick",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Tool to ease Swift development",
   "main": "index.js",
+  "jsnext:main": "es6/index.js",
+  "files": [
+    "es6",
+    "lib",
+    "umd"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "nwb build",
+    "clean": "nwb clean",
+    "test": "nwb test",
+    "test:watch": "nwb test --server"
   },
 	"bin": "./bin/swift-kick",
 	"repository": {
@@ -22,6 +31,6 @@
     "stdio": "^0.2.7"
   },
   "devDependencies": {
-    "rollup-plugin-babel": "^2.4.0"
+    "nwb": "0.11.x"
   }
 }

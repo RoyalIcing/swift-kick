@@ -1,3 +1,10 @@
+/coverage
+/demo/dist
+/es6
+/lib
+/umd
+
+
 # Logs
 logs
 *.log
