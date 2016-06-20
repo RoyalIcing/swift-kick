@@ -1,7 +1,7 @@
 # swift-kick
 Tool to ease Swift development.
 
-## [Use online](https://www.burntcaramel.com/swift-kick/)
+## [Use online here](https://www.burntcaramel.com/swift-kick/)
 
 ## Command line tool instructions
 
