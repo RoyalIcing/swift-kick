@@ -12,7 +12,3 @@ export class Enum {
 		return equatesFuncForEnum(this.enumTree).join('\n')
 	}
 }
-
-export default {
-	Enum
-}

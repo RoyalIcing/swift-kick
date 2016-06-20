@@ -1,13 +1,14 @@
 {
   "name": "swift-kick",
-  "version": "0.2.0",
+  "version": "0.2.7",
   "description": "Tool to ease Swift development",
   "main": "index.js",
   "jsnext:main": "es6/index.js",
   "files": [
     "es6",
     "lib",
-    "umd"
+    "umd",
+		"bin"
   ],
   "scripts": {
     "build": "nwb build",
