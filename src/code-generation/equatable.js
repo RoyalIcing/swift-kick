@@ -27,8 +27,8 @@ const equatesFuncForEnum = R.converge(
 		`public func == (lhs: ${enumName}, rhs: ${enumName}) -> Bool {`,
 		'\tswitch (lhs, rhs) {',
 		indentLines(innerLines),
-		'default:',
-		'\treturn false',
+		'\tdefault:',
+		'\t\treturn false',
 		'\t}',
 		'}'
 	]), [
