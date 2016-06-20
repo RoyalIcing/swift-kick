@@ -1,7 +1,9 @@
 # swift-kick
-Command line tool to ease Swift development
+Tool to ease Swift development.
 
-## Instructions
+## [Use online](https://www.burntcaramel.com/swift-kick/)
+
+## Command line tool instructions
 
 ### Enum Equality
 
@@ -112,7 +114,7 @@ extension ContentReference : JSONObjectRepresentable {
 }
 ```
 
-### Installation
+## Installation
 
 Requires [node.js](https://nodejs.org/en/download/package-manager/)
 
