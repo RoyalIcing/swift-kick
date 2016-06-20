@@ -6,13 +6,13 @@ Command line tool to ease Swift development
 ### Enum Equality
 
 1. Copy your Swift enum declaration with associated values.
-2. `pbpaste | node ./ enum:eq | pbcopy`
+2. `pbpaste | swift-kick enum:eq | pbcopy`
 3. Paste.
 
 ### Enum [JSON parsing and serialization](https://github.com/BurntCaramel/JSON)
 
 1. Copy your Swift enum declaration with associated values.
-2. `pbpaste | node ./ enum:json | pbcopy`
+2. `pbpaste | swift-kick enum:json | pbcopy`
 3. Paste.
 
 ## Example
@@ -28,7 +28,7 @@ public enum ContentReference {
 ```
 
 ```swift
-// pbpaste | node ./ enum:eq | pbcopy
+// pbpaste | swift-kick enum:eq | pbcopy
 
 public func == (lhs: ContentReference, rhs: ContentReference) {
 	switch (lhs, rhs) {
@@ -43,7 +43,7 @@ public func == (lhs: ContentReference, rhs: ContentReference) {
 ```
 
 ```swift
-// pbpaste | node ./ enum:json | pbcopy
+// pbpaste | swift-kick enum:json | pbcopy
 
 extension ContentReference {
 	public enum Kind : String, KindType {
@@ -110,4 +110,12 @@ extension ContentReference : JSONObjectRepresentable {
 		}
 	}
 }
+```
+
+### Installation
+
+Requires [node.js](https://nodejs.org/en/download/package-manager/)
+
+```
+npm install -g swift-kick
 ```
